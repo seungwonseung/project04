@@ -28,8 +28,8 @@
     <!-- Main Stylesheet -->
     <link href="${path}/resources/theme/css/style.css" rel="stylesheet">
     <!--Favicon-->
-    <link rel="shortcut icon" href="${path}/resources/img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="${path}/resources/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="${path}/resources/img/favicon_4.ico" type="image/x-icon">
+    <link rel="icon" href="${path}/resources/img/favicon_4.ico" type="image/x-icon">
 
 
     <!-- 슬라이드 -->

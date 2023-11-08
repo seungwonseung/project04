@@ -271,34 +271,7 @@
                     <tbody>
                     <tr>
                         <td colspan="5" class="content">
-                            <%-- 신고수 3이상이면 블라인드 / 관리자가 열람 설정 선택 --%>
-                            <div>
-                                <c:if test="${sid eq 'admin' && cntReport > 2}">
-                                    <div class="select is-info">
-                                        <select id="contentSelect" onchange="readableEdit(${dto.bno})">
-                                            <option value="true">열람 가능</option>
-                                            <option value="false">열람 불가능</option>
-                                        </select>
-                                    </div>
-                                </c:if>
-                                <c:choose>
-                                    <%-- 관리자일 때 --%>
-                                    <c:when test="${sid eq 'admin'}">
-                                        <c:if test="${cntReport > 2}">
-                                            <h4 style="text-align: center">[신고가 3건 이상 들어온 글입니다.]</h4>
-                                        </c:if>
-                                        <div style="display: block;">${dto.content}</div>
-                                    </c:when>
-                                    <%-- 관리자가 아닐 때 and 신고수 3이상일 때 and readable=false --%>
-                                    <c:when test="${cntReport > 2 && dto.readable == false}">
-                                        <h4 style="text-align: center">[신고가 누적되어 블라인드 처리되었습니다. 관리자에게 문의해주세요]</h4>
-                                    </c:when>
-                                    <%-- 관리자가 아닐 때 and (신고수 3미만일 때 or readable=true) --%>
-                                    <c:otherwise>
-                                        <div style="display: block;">${dto.content}</div>
-                                    </c:otherwise>
-                                </c:choose>
-
+                            <div style="display: block;">${dto.content}</div>
                                 <script>
                                     function readableEdit(Bno) {
                                         let selected =  $("#contentSelect option:selected").val();
@@ -334,151 +307,10 @@
                                         }
                                     });
                                 </script>
-                            </div>
                         </td>
                     </tr>
-                    <c:if test="${not empty sid}">
-                        <tr>
-                            <td colspan="5" style="text-align: right" >
-                                <c:choose>
-                                    <c:when test="${isLiked }">
-                                        <!-- 좋아요를 눌렀을 경우 -->
-                                        <button type="button is-info is-hovered" onclick="toggleLike(${dto.bno}, '${sid}');" class="inbtn" data-board-id="${dto.bno}" style="width: 80px; height: 34px;"><img src="${path}/resources/img/like_blue.png" alt="!" style="height: 26px; margin-top: 5px "></button>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <!-- 좋아요를 누르지 않았을 경우 -->
-                                        <button type="button is-danger is-hovered" onclick="toggleLike(${dto.bno}, '${sid}');" class="inbtn" data-board-id="${dto.bno}" style="width: 80px; height: 34px;"><img src="${path}/resources/img/like_white.png" alt="!" style="height: 26px; margin-top: 5px"></button>
-                                    </c:otherwise>
-                                </c:choose>
-                                <button class="button is-danger is-hovered" onclick="openReportPopup()">
-                                    <img src="${path}/resources/img/report.png" alt="!" style="height: 20px; margin-right: 6px">신고</button></td>
-                        </tr>
-                    </c:if>
-                    </tbody>
-
-                </table>
-                <script>
-                    function toggleLike(boardNo, ${sid }) {
-                        $.ajax({
-                            url: "${path}/board/boardLike.do",
-                            method: "POST",
-                            data: {
-                                boardNo: boardNo,
-                                sid: ${sid }
-                            },
-                            dataType: "json",
-                            success: function(result) {
-                                var likeButton = $("[data-board-id='" + boardNo + "']");
-                                console.log(result.result);
-                                var chk = result.result;
-
-                                if (chk === "liked") {
-                                    likeButton.html("<img src='${path}/resources/img/like_blue.png' alt='!' style='height: 26px; margin-top: 6px'/>");
-                                } else if (chk === "unliked") {
-                                    likeButton.html("<img src='${path}/resources/img/like_white.png' alt='!' style='height: 26px; margin-top: 6px'/>");
-                                } else {
-                                    // likeButton.css("color","#b4b4b4");
-                                    alert("오류가 발생했습니다. 다시 시도해주세요.");
-                                }
-                            }
-                        });
-                    }
-                    $(document).ready(function() {
-                        // 좋아요 상태를 기반으로 버튼 이미지 변경
-                        $(".inbtn").each(function() {
-                            var isLiked = $(this).hasClass("liked");
-                            if (isLiked) {
-                                $(this).addClass("liked");
-                            }
-                        });
-
-                        // 기존의 readable 값 불러와서 select에 값 표시
-                        let readable = ${dto.readable};
-                        console.log(readable);
-                        if(readable == true) {
-                            $("#contentSelect").val("true");
-                        } else {
-                            $("#contentSelect").val("false");
-                        }
-                    });
-                </script>
-
-                <table class="tb2" id="myTable">
-                    <thead>
-                    <tr>
-                        <th class="item1">작성자</th>
-                        <th class="item2">댓글</th>
-                        <th class="item3">작성일</th>
-                        <th class="item4"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="lev" items="${comment }">
-                        <tr>
-                            <td class="item1">${lev.author}</td>
-                            <td class="item2">${lev.content}</td>
-                            <td class="item3">${lev.resdate}</td>
-                            <td class="item4">
-                                <c:if test="${sid eq lev.author || sid eq 'admin'}">
-                                    <a href="${path}/board/commentEdit.do?bno=${lev.bno}" class="button is-link is-small is-outlined is-rounded ">수정</a>
-                                    <a href="${path}/board/comDelete.do?bno=${lev.bno}&par=${lev.par}" class="button is-danger is-small is-outlined is-rounded"> 삭제 </a>
-                                </c:if>
-                            </td>
-                        </tr>
-                    </c:forEach>
                     </tbody>
                 </table>
-
-                <script>
-                    function openReportPopup() {
-                        // 팝업 창의 크기 및 위치를 지정합니다. 필요에 따라 조절할 수 있습니다.
-                        let width = 550;
-                        let height = 300;
-                        let left = (screen.width/2) - (width/2);
-                        let top = (screen.height/2) - (height/2);
-
-                        window.open('${path}/board/reportPopup.do?bno=${dto.bno}&id=${sid}', '신고', 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
-                    }
-                </script>
-                <script>
-                    $(document).ready( function () {
-                        $('#myTable').DataTable({
-                            // sorting 화살표 제거
-                            "targets": 'no-sort',
-                            "bSort": false,
-                            "destroy": true,
-
-                            // 2번째 컬럼을 기준으로 내림차순 정렬
-                            order: [[2, 'desc']],
-                            pageLength : 5,
-                            searching: false, //검색 제거
-                            lengthChange: false, // show entries 제거
-                            info: false,
-
-                            language: {
-                                emptyTable: '작성된 댓글(이)가 없습니다.'
-                            }
-                        });
-                        $('#myTable').css({
-                            'border':'none',
-                        });
-                    } );
-                </script>
-                <form action="${path}/board/commentInsert.do" id="login_frm" class="frm" method="post">
-                    <table class="tb3">
-                        <tbody>
-                        <tr>
-                            <c:if test="${not empty sid}">
-                                <th class="has-text-centered">${sid}</th>
-                                <th><textarea name="content" id="content" cols="100" rows="5" placeholder="댓글 작성" required ></textarea></th>
-                                <th><input type="submit" value="글쓰기" class="inbtn" id="ans_btn"></th>
-                                <input type="hidden" name="bno" value="${dto.bno}" readonly>
-                                <input type="hidden" name="id" value="${sid}" readonly>
-                            </c:if>
-                        </tr>
-                        </tbody>
-                    </table>
-                </form>
             </div>
         </section>
     </div>

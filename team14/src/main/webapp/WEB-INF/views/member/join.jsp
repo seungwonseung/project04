@@ -43,7 +43,7 @@
             margin: 0 auto;
             margin-top: 50px;
             margin-bottom: 50px;
-            background: #eaf4fa;
+            background: #E5E5E5;
             border-radius: 5px;
             width: 600px;
             height: auto;
@@ -296,7 +296,7 @@
         }
 
         .box {
-            background-color: #BED4E9;
+            background-color: #E5E5E5;
         }
 
       
@@ -314,7 +314,7 @@
     </section>
     <div class="contents" id="contents">
         <div class="container">
-            <div class="join_form">
+            <div class="join_form" style="background-color: #E5E5E5">
                 <form class="box" action="${path }/member/insert.do" method="post" onsubmit="return joinCheck(this)">
                     <div class="register_info_id">
                         <label>아이디<%--<span>사용할 수 없는 아이디 입니다</span>--%></label>

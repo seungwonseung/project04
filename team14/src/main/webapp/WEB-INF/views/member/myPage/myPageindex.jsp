@@ -98,15 +98,6 @@
                     </div>
 
                     <p class="my-page__introduction"></p>
-
-                    <div class="my-page__edit-buttons">
-                        <button type="button" class="button is-link is-rounded is-outlined" onclick="location.href='${path14}/member/update.do?id=${sid }'">회원 정보 변경
-                        </button>
-                        <button type="button" class="my-info-edit" onclick="location.href='${path14 }/member/writtenList.do'">
-                            <span class="my-info-edit__text">내가 쓴 글</span>
-                        </button>
-                    </div>
-
                     <div class="transaction-history">
                         <div class="transaction-history__sale">
                             <a href="${path14}/payment/paymentList.do">수강 내역</a>

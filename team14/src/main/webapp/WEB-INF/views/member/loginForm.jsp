@@ -45,7 +45,7 @@
             margin: 0 auto;
             padding-top: 50px;
             width: 440px;
-            background-color: #cbdff3;
+            background-color: #E5E5E5;
         }
 
         #logo-6{
@@ -94,7 +94,7 @@
 <section class="hero is-fullheight">
     <div class="hero-body has-text-centered">
         <div class="login box is-rounded">
-            <img src="${path}/resources/img/smart_haebeop_logo.png" alt="logo" width="220" style="margin-bottom: 20px">
+            <img src="${path}/resources/img/logo782.png" alt="logo" width="220" style="margin-bottom: 20px">
             <form action="${path }/member/signin.do" method="post" name="loginForm">
                 <div class="field">
                     <div class="control">
